@@ -1,0 +1,541 @@
+.glass-content {
+  --background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.header-section {
+  padding: 20px 0 10px;
+}
+
+.app-title {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+  text-align: center;
+  background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-title {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 20px 0 12px 16px;
+}
+
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 8px;
+  gap: 8px;
+  
+  &::-webkit-scrollbar { display: none; }
+  
+  app-card {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+  }
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.loading-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.5);
+  
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  p { font-size: 16px; }
+}
+
+.skeleton-title {
+  width: 150px;
+  height: 24px;
+  border-radius: 8px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.skeleton-card {
+  flex: 0 0 200px;
+  margin-right: 12px;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 120px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.skeleton-text {
+  width: 80%;
+  height: 16px;
+  border-radius: 4px;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+// ============================================
+// MODAL DE DETALLES ULTRA COMPLETO
+// ============================================
+
+.details-modal {
+  --border-radius: 24px 24px 0 0;
+  --backdrop-opacity: 0.8;
+}
+
+.modal-content {
+  --background: #0f0f1a;
+}
+
+// Hero Banner
+.modal-hero {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 15, 26, 0) 0%,
+      rgba(15, 15, 26, 0.3) 50%,
+      rgba(15, 15, 26, 0.95) 100%
+    );
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    margin: 0;
+    
+    ion-icon {
+      font-size: 32px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+  }
+  
+  .hero-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #00c853, #00e676);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
+  }
+  
+  .hero-title {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    
+    h1 {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      line-height: 1.2;
+    }
+    
+    .publisher {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin: 4px 0 0 0;
+    }
+  }
+}
+
+// Body del modal
+.modal-body {
+  padding: 20px 16px 40px;
+}
+
+// Precios
+.price-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  .price-main {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    
+    .price-current {
+      font-size: 32px;
+      font-weight: bold;
+      color: #00e676;
+    }
+    
+    .price-original {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: line-through;
+    }
+  }
+  
+  .price-savings {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #00e676;
+    font-size: 14px;
+    font-weight: 600;
+    
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+// Ratings
+.ratings-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+  
+  .rating-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 8px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    &.metacritic {
+      border-color: rgba(255, 204, 0, 0.3);
+      .rating-score { color: #ffcc00; }
+    }
+    
+    &.steam {
+      border-color: rgba(66, 133, 244, 0.3);
+      .rating-score { color: #4285f4; }
+    }
+    
+    &.deal {
+      border-color: rgba(255, 160, 0, 0.3);
+      .rating-score { color: #ffa000; }
+    }
+    
+    .rating-score {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    
+    .rating-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: center;
+      
+      ion-icon {
+        font-size: 14px;
+      }
+    }
+    
+    .rating-count {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+    }
+  }
+}
+
+// Info Section
+.info-section {
+  margin-bottom: 20px;
+  
+  .section-heading {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(180deg, #00d2ff, #3a7bd5);
+      border-radius: 2px;
+    }
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    
+    ion-icon {
+      font-size: 20px;
+      color: #00d2ff;
+      margin-top: 2px;
+    }
+    
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .info-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 2px;
+    }
+    
+    .info-value {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+      
+      &.highlight {
+        color: #00e676;
+        
+        small {
+          color: rgba(255, 255, 255, 0.5);
+          font-size: 11px;
+          display: block;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+// Stores Section
+.stores-section {
+  margin-bottom: 20px;
+  
+  .section-heading {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(180deg, #00c853, #00e676);
+      border-radius: 2px;
+    }
+  }
+}
+
+.stores-list {
+  background: transparent;
+  
+  .store-item {
+    --background: rgba(255, 255, 255, 0.03);
+    --border-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    
+    ion-thumbnail {
+      width: 40px;
+      height: 40px;
+      
+      img {
+        border-radius: 8px;
+        object-fit: contain;
+      }
+    }
+    
+    ion-label {
+      h3 {
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      
+      p {
+        margin-top: 4px;
+        
+        .store-price {
+          color: #00e676;
+          font-weight: bold;
+          font-size: 16px;
+        }
+        
+        .store-retail {
+          color: rgba(255, 255, 255, 0.4);
+          text-decoration: line-through;
+          font-size: 13px;
+          margin-left: 8px;
+        }
+        
+        .store-savings {
+          background: linear-gradient(135deg, #00c853, #00e676);
+          color: white;
+          padding: 2px 8px;
+          border-radius: 10px;
+          font-size: 11px;
+          font-weight: bold;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+}
+
+// Current Store
+.current-store-section {
+  margin-bottom: 20px;
+  
+  .section-heading {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(180deg, #667eea, #764ba2);
+      border-radius: 2px;
+    }
+  }
+}
+
+.current-store-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  
+  .store-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+    .store-logo-large {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px;
+    }
+    
+    .store-details {
+      h4 {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+      }
+      
+      p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        margin: 0;
+      }
+    }
+  }
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  
+  .btn-primary {
+    --background: linear-gradient(135deg, #667eea, #764ba2);
+    --border-radius: 16px;
+    --box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    height: 52px;
+    font-weight: bold;
+    font-size: 16px;
+    
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+  
+  .btn-secondary {
+    --border-color: rgba(255, 255, 255, 0.2);
+    --border-radius: 16px;
+    --color: white;
+    height: 52px;
+    font-weight: 600;
+    
+    &[color="danger"] {
+      --border-color: rgba(255, 82, 82, 0.3);
+    }
+  }
+}

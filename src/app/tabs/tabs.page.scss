@@ -1,0 +1,26 @@
+.glass-footer {
+  --background: rgba(26, 26, 46, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  ion-tab-button {
+    --color: rgba(255, 255, 255, 0.5);
+    --color-selected: #00d2ff;
+
+    ion-icon {
+      font-size: 24px;
+    }
+
+    ion-label {
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    &.tab-selected {
+      ion-icon {
+        filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.5));
+      }
+    }
+  }
+}

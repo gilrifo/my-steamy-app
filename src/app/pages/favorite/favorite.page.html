@@ -1,0 +1,34 @@
+<ion-content class="ion-padding glass-content">
+  
+  <div class="favorite-header">
+    <h1>❤️ Mis Favoritos</h1>
+    <p *ngIf="favorites.length > 0" class="favorites-count">
+      {{ favorites.length }} juego(s) guardado(s)
+    </p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent" color="light"></ion-spinner>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && favorites.length === 0" class="empty-favorite">
+    <ion-icon name="heart-dislike-outline" class="empty-icon"></ion-icon>
+    <h3>No tienes favoritos</h3>
+    <p>Ve a la pestaña Deals y toca el ❤️ en cualquier juego para agregarlo aquí</p>
+  </div>
+
+  <!-- ✅ LISTA DE FAVORITOS CON *ngFor -->
+  <div *ngIf="!isLoading && favorites.length > 0" class="favorites-list">
+    <app-card 
+      *ngFor="let deal of favorites"
+      [deal]="deal"
+      [store]="getStore(deal.storeID)"
+      [isFavorite]="true"
+      (favoriteToggle)="removeFavorite($event)"
+      (cardClick)="openDeal($event)">
+    </app-card>
+  </div>
+
+</ion-content>

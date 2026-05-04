@@ -1,0 +1,269 @@
+<ion-content class="ion-padding glass-content">
+  
+  <!-- Header -->
+  <div class="header-section">
+    <h1 class="app-title">🔥 Steamy Deals</h1>
+    <app-input 
+      placeholder="Buscar juegos..." 
+      (searchChange)="onSearchChange($event)">
+    </app-input>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading && !isSearching">
+    <ion-skeleton-text animated class="skeleton-title"></ion-skeleton-text>
+    <div class="horizontal-scroll">
+      <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5]">
+        <ion-skeleton-text animated class="skeleton-image"></ion-skeleton-text>
+        <ion-skeleton-text animated class="skeleton-text"></ion-skeleton-text>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Deals -->
+  <div *ngIf="!isSearching && !searchQuery && topDeals.length > 0 && !isLoading">
+    <h2 class="section-title">Top Ofertas</h2>
+    <div class="horizontal-scroll">
+      <app-card 
+        *ngFor="let deal of topDeals"
+        [deal]="deal"
+        [store]="getStore(deal.storeID)"
+        [isFavorite]="isFavorite(deal)"
+        (favoriteToggle)="toggleFavorite($event)"
+        (cardClick)="openGameDetails($event)">
+      </app-card>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div *ngIf="isSearching" class="loading-search">
+    <ion-spinner name="crescent" color="light"></ion-spinner>
+    <p>Buscando "{{searchQuery}}"</p>
+  </div>
+
+  <div *ngIf="searchQuery && !isSearching">
+    <h2 class="section-title">Resultados para "{{searchQuery}}"</h2>
+    
+    <div *ngIf="searchResults.length === 0" class="empty-state">
+      <ion-icon name="search-outline" class="empty-icon"></ion-icon>
+      <p>No se encontraron juegos</p>
+    </div>
+
+    <div class="deals-grid" *ngIf="searchResults.length > 0">
+      <app-card 
+        *ngFor="let deal of searchResults"
+        [deal]="deal"
+        [store]="getStore(deal.storeID)"
+        [isFavorite]="isFavorite(deal)"
+        (favoriteToggle)="toggleFavorite($event)"
+        (cardClick)="openGameDetails($event)">
+      </app-card>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !searchQuery && topDeals.length === 0" class="empty-state">
+    <ion-icon name="game-controller-outline" class="empty-icon"></ion-icon>
+    <p>No hay ofertas disponibles</p>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL DE DETALLES CORREGIDO -->
+  <!-- ============================================ -->
+  <ion-modal #detailsModal 
+             [breakpoints]="[0, 0.3, 0.7, 1]" 
+             [initialBreakpoint]="0.7"
+             class="details-modal">
+    <ng-template>
+      <ion-content class="modal-content" *ngIf="selectedGame && selectedDeal">
+        
+        <!-- Hero -->
+        <div class="modal-hero">
+          <img [src]="selectedGame.info.thumb" [alt]="selectedGame.info.title" class="hero-image" />
+          <div class="hero-overlay"></div>
+          
+          <ion-button fill="clear" class="close-btn" (click)="closeModal()">
+            <ion-icon name="close-circle" color="light"></ion-icon>
+          </ion-button>
+          
+          <div class="hero-badge" *ngIf="selectedDeal.savings && parseFloat(selectedDeal.savings) > 0">
+            <span>-{{ getSavingsPercent(selectedDeal.savings) }}%</span>
+          </div>
+          
+          <div class="hero-title">
+            <h1>{{ selectedGame.info.title }}</h1>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          
+          <!-- PRECIOS -->
+          <div class="price-section">
+            <div class="price-main">
+              <span class="price-current">{{ formatPrice(selectedDeal.salePrice) }}</span>
+              <span class="price-original" *ngIf="selectedDeal.normalPrice !== selectedDeal.salePrice">
+                {{ formatPrice(selectedDeal.normalPrice) }}
+              </span>
+            </div>
+            <div class="price-savings" *ngIf="selectedDeal.savings && parseFloat(selectedDeal.savings) > 0">
+              <ion-icon name="trending-down-outline" color="success"></ion-icon>
+              <span>Ahorras {{ getSavingsPercent(selectedDeal.savings) }}%</span>
+            </div>
+          </div>
+
+          <!-- RATINGS (del Deal, no del GameInfo) -->
+          <div class="ratings-section" *ngIf="selectedDeal.metacriticScore || selectedDeal.steamRatingPercent">
+            
+            <div class="rating-card metacritic" *ngIf="selectedDeal.metacriticScore">
+              <div class="rating-score">{{ selectedDeal.metacriticScore }}</div>
+              <div class="rating-label">
+                <ion-icon name="ribbon"></ion-icon>
+                <span>Metacritic</span>
+              </div>
+            </div>
+
+            <div class="rating-card steam" *ngIf="selectedDeal.steamRatingPercent && parseInt(selectedDeal.steamRatingPercent) > 0">
+              <div class="rating-score">{{ selectedDeal.steamRatingPercent }}%</div>
+              <div class="rating-label">
+                <ion-icon name="logo-steam"></ion-icon>
+                <span>Steam Rating</span>
+              </div>
+              <div class="rating-count" *ngIf="selectedDeal.steamRatingCount">
+                {{ selectedDeal.steamRatingCount }} reviews
+              </div>
+            </div>
+
+            <div class="rating-card deal" *ngIf="selectedDeal.dealRating">
+              <div class="rating-score">{{ selectedDeal.dealRating }}</div>
+              <div class="rating-label">
+                <ion-icon name="star"></ion-icon>
+                <span>Deal Rating</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <div class="info-section">
+            <h3 class="section-heading">Información</h3>
+            
+            <div class="info-grid">
+              <div class="info-item" *ngIf="selectedDeal.releaseDate">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <div>
+                  <span class="info-label">Lanzamiento</span>
+                  <span class="info-value">{{ formatDate(selectedDeal.releaseDate) }}</span>
+                </div>
+              </div>
+
+              <div class="info-item" *ngIf="selectedDeal.steamAppID">
+                <ion-icon name="logo-steam"></ion-icon>
+                <div>
+                  <span class="info-label">Steam App ID</span>
+                  <span class="info-value">{{ selectedDeal.steamAppID }}</span>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <ion-icon name="pricetag-outline"></ion-icon>
+                <div>
+                  <span class="info-label">ID del Juego</span>
+                  <span class="info-value">{{ selectedDeal.gameID }}</span>
+                </div>
+              </div>
+
+              <div class="info-item" *ngIf="selectedGame.cheapestPriceEver && selectedGame.cheapestPriceEver.price">
+                <ion-icon name="time-outline"></ion-icon>
+                <div>
+                  <span class="info-label">Precio histórico más bajo</span>
+                  <span class="info-value highlight">
+                    {{ formatPrice(selectedGame.cheapestPriceEver.price) }}
+                    <small *ngIf="selectedGame.cheapestPriceEver.date">
+                      ({{ formatDate(selectedGame.cheapestPriceEver.date) }})
+                    </small>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OTRAS TIENDAS (deals del API /games) -->
+          <div class="stores-section" *ngIf="selectedGame.deals && selectedGame.deals.length > 0">
+            <h3 class="section-heading">Precios en otras tiendas</h3>
+            
+            <ion-list class="stores-list">
+              <ion-item *ngFor="let gameDeal of selectedGame.deals" 
+                        class="store-item"
+                        [class.current-store]="gameDeal.dealID === selectedDeal.dealID"
+                        (click)="gameDeal.dealID !== selectedDeal.dealID ? openDealById(gameDeal.dealID) : null"
+                        [button]="gameDeal.dealID !== selectedDeal.dealID"
+                        [detail]="gameDeal.dealID !== selectedDeal.dealID">
+                
+                <ion-thumbnail slot="start" *ngIf="getStoreById(gameDeal.storeID)">
+                  <img [src]="'https://www.cheapshark.com' + getStoreById(gameDeal.storeID)!.images.logo" 
+                       [alt]="getStoreById(gameDeal.storeID)!.storeName" />
+                </ion-thumbnail>
+                
+                <ion-label>
+                  <h3>
+                    {{ getStoreById(gameDeal.storeID)?.storeName || 'Tienda ' + gameDeal.storeID }}
+                    <ion-badge color="warning" *ngIf="gameDeal.dealID === selectedDeal.dealID" class="current-badge">ACTUAL</ion-badge>
+                  </h3>
+                  <p>
+                    <span class="store-price">{{ formatPrice(gameDeal.price) }}</span>
+                    <span class="store-retail" *ngIf="gameDeal.retailPrice !== gameDeal.price">
+                      {{ formatPrice(gameDeal.retailPrice) }}
+                    </span>
+                    <span class="store-savings" *ngIf="parseFloat(gameDeal.savings) > 0">
+                      -{{ getSavingsPercent(gameDeal.savings) }}%
+                    </span>
+                  </p>
+                </ion-label>
+                
+                <ion-icon name="open-outline" slot="end" color="primary" *ngIf="gameDeal.dealID !== selectedDeal.dealID"></ion-icon>
+              </ion-item>
+            </ion-list>
+          </div>
+
+          <!-- TIENDA ACTUAL -->
+          <div class="current-store-section">
+            <h3 class="section-heading">Tienda seleccionada</h3>
+            <div class="current-store-card">
+              <div class="store-info" *ngIf="getStore(selectedDeal.storeID)">
+                <img [src]="'https://www.cheapshark.com' + getStore(selectedDeal.storeID)!.images.logo" 
+                     [alt]="getStore(selectedDeal.storeID)!.storeName"
+                     class="store-logo-large" />
+                <div class="store-details">
+                  <h4>{{ getStore(selectedDeal.storeID)!.storeName }}</h4>
+                  <p>Precio: {{ formatPrice(selectedDeal.salePrice) }}</p>
+                  <p *ngIf="selectedDeal.savings && parseFloat(selectedDeal.savings) > 0" class="savings-text">
+                    Ahorras {{ getSavingsPercent(selectedDeal.savings) }}%
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTONES -->
+          <div class="action-buttons">
+            <ion-button expand="block" 
+                        class="btn-primary"
+                        (click)="viewDealFromModal()">
+              <ion-icon name="open-outline" slot="start"></ion-icon>
+              VER OFERTA EN {{ getStore(selectedDeal.storeID)?.storeName || 'TIENDA' | uppercase }}
+            </ion-button>
+
+            <ion-button expand="block" 
+                        fill="outline"
+                        class="btn-secondary"
+                        (click)="toggleFavorite(selectedDeal)"
+                        [color]="isFavorite(selectedDeal) ? 'danger' : 'light'">
+              <ion-icon [name]="isFavorite(selectedDeal) ? 'heart' : 'heart-outline'" slot="start"></ion-icon>
+              {{ isFavorite(selectedDeal) ? 'QUITAR DE FAVORITOS' : 'AGREGAR A FAVORITOS' }}
+            </ion-button>
+          </div>
+
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>
