@@ -1,170 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/widget_background">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="#000000">
 
-    <!-- ============================================ -->
-    <!-- IMAGEN DEL JUEGO - OCUPA TODO EL ESPACIO -->
-    <!-- ============================================ -->
     <ImageView
-        android:id="@+id/widget_game_image"
+        android:id="@+id/widget_image"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop" />
 
-    <!-- Gradiente para legibilidad del texto -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:background="@drawable/widget_gradient_full" />
-
-    <!-- ============================================ -->
-    <!-- BADGE DE DESCUENTO (esquina superior izquierda) -->
-    <!-- ============================================ -->
     <TextView
-        android:id="@+id/widget_savings_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
-        android:layout_margin="16dp"
-        android:background="@drawable/badge_background_large"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:elevation="4dp" />
-
-    <!-- ============================================ -->
-    <!-- INDICADOR DE POSICIÓN (puntos del carrusel) -->
-    <!-- ============================================ -->
-    <LinearLayout
-        android:id="@+id/widget_indicators"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal" />
-
-    <!-- ============================================ -->
-    <!-- PANEL INFERIOR CON INFO DEL JUEGO -->
-    <!-- ============================================ -->
-    <LinearLayout
+        android:id="@+id/widget_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:background="@drawable/widget_bottom_panel">
+        android:text="Juego"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:textColor="#FFFFFF" />
 
-        <!-- Título del juego -->
-        <TextView
-            android:id="@+id/widget_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:shadowColor="#000000"
-            android:shadowDx="0"
-            android:shadowDy="2"
-            android:shadowRadius="4" />
+    <TextView
+        android:id="@+id/widget_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="$0.00"
+        android:textStyle="bold"
+        android:textSize="16sp" 
+        android:textColor="#FFFFFF"/>
 
-        <!-- Fila: Logo tienda + Nombre + Precio -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="12dp">
-
-            <!-- Logo de tienda con fondo blanco -->
-            <ImageView
-                android:id="@+id/widget_store_logo"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/store_logo_bg"
-                android:padding="6dp" />
-
-            <!-- Nombre de tienda -->
-            <TextView
-                android:id="@+id/widget_store"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:shadowColor="#000000"
-                android:shadowDx="0"
-                android:shadowDy="1"
-                android:shadowRadius="3" />
-
-            <!-- Precios -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="end">
-
-                <TextView
-                    android:id="@+id/widget_retail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/widget_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#00E676"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:shadowColor="#000000"
-                    android:shadowDx="0"
-                    android:shadowDy="2"
-                    android:shadowRadius="4" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Mejor precio histórico -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mejor precio histórico:"
-                android:textColor="#80FFFFFF"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/widget_cheapest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:textColor="#FFD700"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- ViewFlipper invisible para controlar animaciones -->
-    <ViewFlipper
-        android:id="@+id/widget_flipper"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:inAnimation="@android:anim/fade_in"
-        android:outAnimation="@android:anim/fade_out" />
-
-</FrameLayout>
+</LinearLayout>
